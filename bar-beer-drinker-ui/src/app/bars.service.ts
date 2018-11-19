@@ -38,6 +38,10 @@ export class BarsService {
     return this.http.get<BarMenuItem[]>('/api/menu/' + bar);
   }
 
+  getSpenders(bar: string) {
+    return this.http.get<any[]>('/api/bar/topspenders/' + bar)
+  }
+
   getFrequentCounts() {
     return this.http.get<any[]>('/api/frequents-data');
   }

@@ -107,6 +107,11 @@ def get_item_manufacturers(item):
             return None
         return result['manf']
 
+def get_bar_top_spenders(bar_name):
+    with engine.connect() as con:
+        query = sql.text("SELECT drinker, CAST(SUM(price+tip) as UNSIGNED) as spent FROM bills INNER JOIN transactions ON bills.trans_id=transactions.trans_id WHERE bar=:bar GROUP BY drinker ORDER BY spent DESC")
+        rs = con.execute(query, bar=bar_name)
+        return [dict(row) for row in rs]
 
 def get_drinkers():
     with engine.connect() as con:
