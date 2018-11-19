@@ -44,7 +44,8 @@ def get_bar_menu(bar_name):
                 ON a.item = b.name \
                 LEFT OUTER JOIN (SELECT item, count(*) as like_count FROM likes GROUP BY item) as c \
                 ON a.item = c.item \
-                WHERE a.bar = :bar; \
+                WHERE a.bar = :bar \
+                ORDER BY b.manf; \
             ')
         rs = con.execute(query, bar=bar_name)
         results = [dict(row) for row in rs]
@@ -112,6 +113,25 @@ def get_bar_top_spenders(bar_name):
         query = sql.text("SELECT drinker, CAST(SUM(price+tip) as UNSIGNED) as spent FROM bills INNER JOIN transactions ON bills.trans_id=transactions.trans_id WHERE bar=:bar GROUP BY drinker ORDER BY spent DESC")
         rs = con.execute(query, bar=bar_name)
         return [dict(row) for row in rs]
+
+
+def get_bar_top_beers(bar_name):
+    with engine.connect() as con:
+        query = sql.text("SELECT contains.item, SUM(contains.quantity) AS count FROM transactions INNER JOIN contains ON transactions.trans_id=contains.trans_id WHERE contains.item IN (SELECT name FROM items WHERE manf <> '') AND transactions.bar=:bar GROUP BY item ORDER BY count DESC")
+        rs = con.execute(query, bar=bar_name)
+        results = [dict(row) for row in rs]
+        for r in results:
+            r['count'] = int(r['count'])
+        return results
+
+def get_bar_top_manufacturers(bar_name):
+    with engine.connect() as con:
+        query = sql.text("SELECT manf, CAST(SUM(c) as UNSIGNED)  as count FROM (SELECT contains.item, SUM(contains.quantity) AS c FROM transactions INNER JOIN contains ON transactions.trans_id=contains.trans_id WHERE contains.item IN (SELECT name FROM items WHERE manf <> '') AND transactions.bar=:bar GROUP BY item ORDER BY c DESC) T INNER JOIN items ON T.item=items.name GROUP BY items.manf ORDER BY count DESC")
+        rs = con.execute(query, bar=bar_name)
+        results = [dict(row) for row in rs]
+        for r in results:
+            r['count'] = int(r['count'])
+            return results
 
 def get_drinkers():
     with engine.connect() as con:

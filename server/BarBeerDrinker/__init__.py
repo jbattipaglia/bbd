@@ -94,6 +94,33 @@ def get_manufacturers_making(beer):
     except Exception as e:
         return make_response(str(e), 500)
 
+@app.route('/api/bar/topbeers/<name>', methods=["GET"])
+def get_bar_top_beers(name):
+    try:
+        if name is None:
+            raise ValueError("Bar is not specified")
+        results = database.get_bar_top_beers(name)
+        if results is None:
+            return make_response("No bar found with the given name", 404)
+        return jsonify(results)
+    except ValueError as e:
+        return make_response(str(e), 400)
+    except Exception as e:
+        return make_response(str(e), 500)
+
+@app.route('/api/bar/topmanufacturers/<name>', methods=["GET"])
+def get_bar_top_manufacturers(name):
+    try:
+        if name is None:
+            raise ValueError("Bar is not specified")
+        results = database.get_bar_top_manufacturers(name)
+        if results is None:
+            return make_response("No bar found with the given name", 404)
+        return jsonify(results)
+    except ValueError as e:
+        return make_response(str(e), 400)
+    except Exception as e:
+        return make_response(str(e), 500)
 
 @app.route("/api/likes", methods=["GET"])
 def get_likes():

@@ -36,7 +36,7 @@ export class BarDetailsComponent implements OnInit {
           }
         }
       );
-
+/*
       this.barService.getFrequentCounts().subscribe(
         data => {
           console.log(data);
@@ -51,7 +51,7 @@ export class BarDetailsComponent implements OnInit {
   
           this.renderChart(bars, counts);
         }
-      );
+      );*/
 
       this.barService.getSpenders(this.barName).subscribe(
         data => {
@@ -65,9 +65,43 @@ export class BarDetailsComponent implements OnInit {
             spent.push(bar.spent);
           });
   
-          this.renderChart(drinkers, spent);
+          this.renderChart1(drinkers, spent);
         }
       );
+
+      this.barService.getTopItems(this.barName).subscribe(
+        data => {
+          console.log(data);
+  
+          const items = [];
+          const count = [];
+  
+          data.forEach(bar => {
+            items.push(bar.item);
+            count.push(bar.count);
+          });
+  
+          this.renderChart2(items, count);
+        }
+      );
+
+
+      this.barService.getTopManf(this.barName).subscribe(
+        data => {
+          console.log(data);
+  
+          const manf = [];
+          const count = [];
+  
+          data.forEach(bar => {
+            manf.push(bar.manf);
+            count.push(bar.count);
+          });
+  
+          this.renderChart3(manf, count);
+        }
+      );
+
 
       barService.getMenu(this.barName).subscribe(
         data => {
@@ -77,8 +111,8 @@ export class BarDetailsComponent implements OnInit {
     });
   }
 
-  renderChart(bars: string[], counts: number[]) {
-    Highcharts.chart('bargraph', {
+  renderChart1(bars: string[], counts: number[]) {
+    Highcharts.chart('spendersbg', {
       chart: {
         type: 'column'
       },
@@ -118,6 +152,132 @@ export class BarDetailsComponent implements OnInit {
       }]
     });
   }
+
+  renderChart2(bars: string[], counts: number[]) {
+    Highcharts.chart('topsellingitems', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Top selling beers at this bar'
+      },
+      xAxis: {
+        categories: bars,
+        title: {
+          text: 'Name of Beer'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Amount sold'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        data: counts
+      }]
+    });
+  }
+
+  renderChart3(bars: string[], counts: number[]) {
+    Highcharts.chart('topsellingmanf', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Most popular manufacturers at this bar'
+      },
+      xAxis: {
+        categories: bars,
+        title: {
+          text: 'Manufacturer Name'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Amount of beers sold'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        data: counts
+      }]
+    });
+  }
+/*
+  renderChart(bars: string[], counts: number[]) {
+    Highcharts.chart('barchart', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Top spenders at this bar'
+      },
+      xAxis: {
+        categories: bars,
+        title: {
+          text: 'Customer Name'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Amount spent'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        data: counts
+      }]
+    });
+}*/
 
   ngOnInit() {
   }

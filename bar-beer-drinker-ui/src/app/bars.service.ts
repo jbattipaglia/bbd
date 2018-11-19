@@ -42,6 +42,14 @@ export class BarsService {
     return this.http.get<any[]>('/api/bar/topspenders/' + bar)
   }
 
+  getTopItems(bar: string) {
+    return this.http.get<any[]>('/api/bar/topbeers/' + bar)
+  }
+
+  getTopManf(bar: string) {
+    return this.http.get<any[]>('/api/bar/topmanufacturers/' + bar)
+  }
+
   getFrequentCounts() {
     return this.http.get<any[]>('/api/frequents-data');
   }
