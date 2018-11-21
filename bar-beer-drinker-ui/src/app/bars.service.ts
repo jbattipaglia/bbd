@@ -50,6 +50,10 @@ export class BarsService {
     return this.http.get<any[]>('/api/bar/topmanufacturers/' + bar)
   }
 
+  getBusyHours(bar: string){
+      return this.http.get<any[]>('/api/bar/busyhours/' + bar)
+  }
+
   getFrequentCounts() {
     return this.http.get<any[]>('/api/frequents-data');
   }

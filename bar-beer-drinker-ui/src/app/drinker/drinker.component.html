@@ -3,7 +3,55 @@
   show bar graph of which beers the drinker drinks the most
   show bar graph of spending at different bars on different days/weeks/months -->
 
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">{{ drinkerName }}</h1>
+        <p class="bar-details" *ngIf="drinkerDetails">
+            {{ drinkerDetails?.address }} <span *ngIf="drinkerDetails.address && drinkerDetails.city"> | </span> {{ drinkerDetails?.city }} <span *ngIf="drinkerDetails.address && drinkerDetails.city">, </span> {{drinkerDetails?.state}}
+             <br>
+            Phone: {{ drinkerDetails?.phone }}
+        </p>
+    </div>
+</div>
 
-<p>
-  drinker works!
-</p>
+<div class="container">
+    <br>
+    <div id="topbars"></div>
+</div>
+
+<div class="container">
+    <br>
+    <div id="topbeers"></div>
+</div>
+
+<div class="container">
+    <br>
+    <div id="timeofspending"></div>
+</div>
+<br>
+
+<div class="container">
+    <h2 class="text-center font-weight-light">Transactions</h2>
+    <br>
+    
+    <p-table [value]="transactions" sortMode="multiple">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Transaction ID</th>
+                <th>Bar Name</th>
+                <th>Price</th>
+                <th>Tip</th>
+                <th>Time</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-trans_id>
+            <tr>
+                <td>{{ trans_id.trans_id }}</td>
+                <td>{{ trans_id.bar }}</td>
+                <td>{{ trans_id.price | currency }}</td>
+                <td>{{ trans_id.tip | currency }}</td>
+                <td>{{ trans_id.time }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

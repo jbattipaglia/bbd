@@ -151,6 +151,15 @@ def get_beer_top_drinkers(beer_name):
             r['count'] = int(r['count'])
             return results
 
+def get_bar_busy_hours(bar_name):
+    with engine.connect() as con:
+        query = sql.text("SELECT HOUR(transactions.time) as hour, count(*) as count FROM transactions where transactions.bar=:name GROUP BY hour ORDER BY hour")
+        rs = con.execute(query, name=bar_name)
+        results = [dict(row) for row in rs]
+        for r in results:
+            r['count'] = int(r['count'])
+            return results
+
 def get_beer_peak_times(beer_name):
     with engine.connect() as con:
         query = sql.text("SELECT HOUR(transactions.time) as hour, CAST(SUM(contains.quantity) as UNSIGNED) as count FROM transactions INNER JOIN contains ON transactions.trans_id=contains.trans_id WHERE contains.item=:beer GROUP BY hour ORDER BY hour")
@@ -164,6 +173,42 @@ def get_drinkers():
     with engine.connect() as con:
         rs = con.execute('SELECT name, city, phone, address FROM drinkers;')
         return [dict(row) for row in rs]
+
+def get_drinker_transactions(drinker_name):
+    with engine.connect() as con:
+        query = sql.text('select transactions.trans_id, bar, price, tip, time FROM transactions INNER JOIN bills on transactions.trans_id=bills.trans_id WHERE bills.drinker=:name ORDER BY price DESC')
+        rs = con.execute(query, name=drinker_name)
+        results = [dict(row) for row in rs]
+        for r in results:
+            r['price'] = float(r['price'])
+            r['tip'] = float(r['tip'])
+            r['time'] = str(r['time'])
+        return results
+
+def get_drinker_top_bars(drinker_name):
+    with engine.connect() as con:
+        query = sql.text('select bar, sum(price) as count from bills inner join transactions on transactions.trans_id=bills.trans_id where drinker=:name group by bar order by count desc')
+        rs = con.execute(query, name=drinker_name)
+        results = [dict(row) for row in rs]
+        for r in results:
+            r['count'] = float(r['count'])
+        return results
+
+def get_drinker_top_beers(drinker_name):
+    with engine.connect() as con:
+        query = sql.text('SELECT contains.item, SUM(contains.quantity) AS count FROM bills INNER JOIN contains ON bills.trans_id=contains.trans_id WHERE contains.item IN (SELECT name FROM items WHERE manf <> "") AND bills.drinker=:name GROUP BY item ORDER BY count DESC')
+        rs = con.execute(query, name=drinker_name)
+        results = [dict(row) for row in rs]
+        for r in results:
+            r['count'] = int(r['count'])
+        return results
+
+def get_drinker_time_spending(drinker_name):
+    with engine.connect() as con:
+        query = sql.text('SELECT HOUR(time) as hour, count(*) as count FROM bills inner join transactions on transactions.trans_id=bills.trans_id where drinker=:name group by hour order by hour')
+        rs = con.execute(query, name=drinker_name)
+        results = [dict(row) for row in rs]
+        return results
 
 
 def get_likes(drinker_name):

@@ -102,10 +102,27 @@ export class BarDetailsComponent implements OnInit {
         }
       );
 
+      this.barService.getBusyHours(this.barName).subscribe(
+        data => {
+          console.log(data);
+  
+          const hours = [];
+          const count = [];
+  
+          data.forEach(bar => {
+            hours.push(bar.hours);
+            count.push(bar.count);
+          });
+  
+          this.renderChartBusyHours(hours, count);
+        }
+      );
+
 
       barService.getMenu(this.barName).subscribe(
         data => {
           this.menu = data;
+          console.log(data);
         }
       );
     });
@@ -236,25 +253,25 @@ export class BarDetailsComponent implements OnInit {
       }]
     });
   }
-/*
-  renderChart(bars: string[], counts: number[]) {
-    Highcharts.chart('barchart', {
+
+  renderChartBusyHours(bars: string[], counts: number[]) {
+    Highcharts.chart('busiesttimes', {
       chart: {
         type: 'column'
       },
       title: {
-        text: 'Top spenders at this bar'
+        text: 'Sales over time'
       },
       xAxis: {
         categories: bars,
         title: {
-          text: 'Customer Name'
+          text: 'Hour of Day'
         }
       },
       yAxis: {
         min: 0,
         title: {
-          text: 'Amount spent'
+          text: 'Transactions Made'
         },
         labels: {
           overflow: 'justify'
@@ -277,7 +294,8 @@ export class BarDetailsComponent implements OnInit {
         data: counts
       }]
     });
-}*/
+  }
+
 
   ngOnInit() {
   }
