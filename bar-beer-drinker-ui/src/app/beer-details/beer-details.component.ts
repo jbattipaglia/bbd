@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { SelectItem } from 'primeng/components/common/selectitem';
 
+declare const Highcharts: any;
 @Component({
   selector: 'app-beer-details',
   templateUrl: './beer-details.component.html',
@@ -39,6 +40,55 @@ export class BeerDetailsComponent implements OnInit {
           }
         );
 
+    
+    this.beerService.getBeerTopBars(this.beerName).subscribe(
+        data => {
+            console.log(data);
+
+            const bars = [];
+            const quantity = [];
+
+            data.forEach(bar => {
+                bars.push(bar.bar);
+                quantity.push(bar.count);
+            });
+
+            this.renderChartTopBars(bars, quantity);
+        }
+    );
+
+    this.beerService.getBeerTopDrinkers(this.beerName).subscribe(
+        data => {
+            console.log(data);
+
+            const drinker = [];
+            const quantity = [];
+
+            data.forEach(bar => {
+                drinker.push(bar.drinker);
+                quantity.push(bar.count);
+            });
+
+            this.renderChartTopDrinkers(drinker, quantity);
+        }
+    );
+
+    this.beerService.getBeerPeakTimes(this.beerName).subscribe(
+        data => {
+            console.log(data);
+
+            const times = [];
+            const quantity = [];
+
+            data.forEach(bar => {
+                times.push(bar.time);
+                quantity.push(bar.count);
+            });
+
+            this.renderChartPeakTimes(times, quantity);
+        }
+    );
+ 
       this.filterOptions = [
         {
           'label': 'Low price first',
@@ -59,6 +109,133 @@ export class BeerDetailsComponent implements OnInit {
       ];
     });
   }
+
+  renderChartTopBars(bars: string[], counts: number[]) {
+    Highcharts.chart('topbars', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Top bars for this beer'
+      },
+      xAxis: {
+        categories: bars,
+        title: {
+          text: 'Bar Name'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Amount sold'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        data: counts
+      }]
+    });
+  }
+
+  renderChartTopDrinkers(bars: string[], counts: number[]) {
+    Highcharts.chart('topdrinkers', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Top drinkers of this beer'
+      },
+      xAxis: {
+        categories: bars,
+        title: {
+          text: 'Drinker'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Amount purchased'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        data: counts
+      }]
+    });
+  }
+
+  renderChartPeakTimes(bars: string[], counts: number[]) {
+    Highcharts.chart('peaktimes', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Times when this beer is purchased'
+      },
+      xAxis: {
+        categories: bars,
+        title: {
+          text: 'Time'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Amount sold'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        data: counts
+      }]
+    });
+  }
+
 
   ngOnInit() {
   }

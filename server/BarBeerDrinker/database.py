@@ -133,6 +133,33 @@ def get_bar_top_manufacturers(bar_name):
             r['count'] = int(r['count'])
             return results
 
+def get_beer_top_bars(beer_name):
+    with engine.connect() as con:
+        query = sql.text("SELECT transactions.bar as bar, CAST(SUM(contains.quantity) as UNSIGNED) AS count FROM transactions INNER JOIN contains ON transactions.trans_id=contains.trans_id WHERE contains.item=:beer GROUP BY transactions.bar ORDER BY count DESC")
+        rs = con.execute(query, beer=beer_name)
+        results = [dict(row) for row in rs]
+        for r in results:
+            r['count'] = int(r['count'])
+            return results
+
+def get_beer_top_drinkers(beer_name):
+    with engine.connect() as con:
+        query = sql.text("SELECT bills.drinker as drinker, CAST(SUM(contains.quantity) as UNSIGNED) AS count FROM bills INNER JOIN contains ON bills.trans_id=contains.trans_id WHERE contains.item=:beer GROUP BY bills.drinker ORDER BY count DESC")
+        rs = con.execute(query, beer=beer_name)
+        results = [dict(row) for row in rs]
+        for r in results:
+            r['count'] = int(r['count'])
+            return results
+
+def get_beer_peak_times(beer_name):
+    with engine.connect() as con:
+        query = sql.text("SELECT HOUR(transactions.time) as hour, CAST(SUM(contains.quantity) as UNSIGNED) as count FROM transactions INNER JOIN contains ON transactions.trans_id=contains.trans_id WHERE contains.item=:beer GROUP BY hour ORDER BY hour")
+        rs = con.execute(query, beer=beer_name)
+        results = [dict(row) for row in rs]
+        for r in results:
+            r['count'] = int(r['count'])
+            return results
+
 def get_drinkers():
     with engine.connect() as con:
         rs = con.execute('SELECT name, city, phone, address FROM drinkers;')

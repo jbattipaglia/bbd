@@ -22,11 +22,23 @@ export class BeersService {
     return this.http.get<BeerLocation[]>(`/api/bars-selling/${beer}`);
   }
 
+  getBeerTopBars(beer: string) {
+      return this.http.get<any[]>('/api/beer/topbars/' + beer);
+  }
+
+  getBeerTopDrinkers(beer: string) {
+      return this.http.get<any[]>('/api/beer/topdrinkers/' + beer);
+  }
+
+  getBeerPeakTimes(beer: string) {
+      return this.http.get<any[]>('/api/beer/peaktimes/' + beer);
+  }
+
   getBeerManufacturers(beer?: string): any {
     if (beer) {
-      return this.http.get<string>(`/api/item-manufacturer/${beer}`);
+      return this.http.get<string>(`/api/beer-manufacturer/${beer}`);
     }
-    return this.http.get<string[]>('/api/item-manufacturer');
+    return this.http.get<string[]>('/api/beer-manufacturer');
   }
 
 }
