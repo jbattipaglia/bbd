@@ -116,7 +116,7 @@ export class BeerDetailsComponent implements OnInit {
         type: 'column'
       },
       title: {
-        text: 'Top bars for this beer'
+        text: 'Top bars for this item'
       },
       xAxis: {
         categories: bars,
@@ -158,12 +158,12 @@ export class BeerDetailsComponent implements OnInit {
         type: 'column'
       },
       title: {
-        text: 'Top drinkers of this beer'
+        text: 'Top consumers of this item'
       },
       xAxis: {
         categories: bars,
         title: {
-          text: 'Drinker'
+          text: 'Consumer'
         }
       },
       yAxis: {
@@ -200,12 +200,12 @@ export class BeerDetailsComponent implements OnInit {
         type: 'column'
       },
       title: {
-        text: 'Times when this beer is purchased'
+        text: 'Times when this item is purchased'
       },
       xAxis: {
         categories: bars,
         title: {
-          text: 'Time'
+          text: 'Hour of Day'
         }
       },
       yAxis: {

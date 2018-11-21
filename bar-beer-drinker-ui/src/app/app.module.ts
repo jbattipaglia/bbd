@@ -16,6 +16,7 @@ import { BeersComponent } from './beers/beers.component';
 import { InsightComponent } from './insight/insight.component';
 import { DrinkerComponent } from './drinker/drinker.component';
 import { ModificationComponent } from './modification/modification.component';
+import { DrinkerPageComponent } from './drinker-page/drinker-page.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ModificationComponent } from './modification/modification.component';
     BeersComponent,
     InsightComponent,
     DrinkerComponent,
-    ModificationComponent
+    ModificationComponent,
+    DrinkerPageComponent
   ],
   imports: [
     BrowserModule,

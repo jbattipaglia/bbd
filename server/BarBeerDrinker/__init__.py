@@ -188,6 +188,12 @@ def get_likes():
     except Exception as e:
         return make_response(str(e), 500)
 
+@app.route("/api/drinkers", methods=["GET"])
+def get_all_drinkers():
+    try:
+        return jsonify(database.get_all_drinkers())
+    except Exception as e:
+        return make_response(str(e), 500)
 
 @app.route("/api/drinker", methods=["GET"])
 def get_drinkers():

@@ -10,6 +10,11 @@ def get_bars():
         rs = con.execute("SELECT name, license, city, phone, address FROM bars;")
         return [dict(row) for row in rs]
 
+def get_all_drinkers():
+    with engine.connect() as con:
+        rs = con.execute("SELECT name, phone, address, city, state FROM drinkers;")
+        return [dict(row) for row in rs]
+
 def find_bar(name):
     with engine.connect() as con:
         query = sql.text(

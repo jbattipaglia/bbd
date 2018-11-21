@@ -28,6 +28,10 @@ export class DrinkerService {
       return this.http.get<Drinker>('/api/drinker/' + drinker);
   }
 
+  getAllDrinkers(){
+      return this.http.get<Drinker[]>('/api/drinkers');
+  }
+
   getTransactions(drinker: string) {
       console.log(drinker + " test");
       return this.http.get<DrinkerTransaction[]>('/api/drinker/transactions/' + drinker);
