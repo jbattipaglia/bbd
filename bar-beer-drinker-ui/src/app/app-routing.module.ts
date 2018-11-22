@@ -7,6 +7,7 @@ import { BeersComponent } from './beers/beers.component';
 import { InsightComponent } from './insight/insight.component';
 import { DrinkerComponent } from './drinker/drinker.component';
 import { DrinkerPageComponent } from './drinker-page/drinker-page.component';
+import { ModificationComponent } from './modification/modification.component';
 
 const routes: Routes = [
   {
@@ -35,9 +36,9 @@ const routes: Routes = [
     component: BeerDetailsComponent
   },
   {
-    path: 'insight',
+    path: 'modification',
     pathMatch: 'full',
-    component: InsightComponent
+    component: ModificationComponent
   },
   {
     path: 'drinkers',

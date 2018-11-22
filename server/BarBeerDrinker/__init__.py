@@ -268,6 +268,16 @@ def find_bars_selling(beer):
     except Exception as e:
         return make_response(str(e), 500)
 
+@app.route('/api/modification/<modification>', methods=['GET'])
+def modify(modification):
+    try:
+        if modification is None:
+            raise ValueError('No modification specified')
+        return jsonify(database.modify(modification))
+    except ValueError as e:
+        return make_response(str(e), 400)
+    except Exception as e:
+        return make_response(str(e), 500)
 
 @app.route('/api/frequents-data', methods=['GET'])
 def get_bar_frequent_counts():

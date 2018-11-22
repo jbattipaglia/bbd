@@ -7,7 +7,22 @@
   assertions: all patterns should be enforced with proper error messages if the input is not accepted
 -->
 
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">Modify the database</h1>
+      <p class="lead">Have some info you'd like to add? Use the box below to execute SQL and modify our database.</p>
+    </div>
+  </div>
 
-<p>
-  modification works!
-</p>
+  <br/>
+  <div class="container">
+    <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize"
+    type="text" class="form-control" id="modification" required [(ngModel)]="modification"
+    name="query" placeholder="Enter your SQL modification here. 
+Careful! Modifications are permanent."></textarea>
+    <br/>
+    <button pButton type="button" [disabled]="!modification" class="ui-button-secondary" label="Submit" (click)="getResult()">Click to modify!</button>
+    <br/>
+    <span class="lead">{{result}}</span>
+  </div>
+  <br/>

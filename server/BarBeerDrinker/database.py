@@ -233,3 +233,9 @@ def get_drinker_info(drinker_name):
         if result is None:
             return None
         return dict(result)
+
+def modify(modification):
+    with engine.connect() as con:
+        modification = sql.text(modification)
+        rs = con.execute(modification)
+        return dict({'rows': rs.rowcount})
